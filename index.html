@@ -12,31 +12,28 @@
     <button id="scanButton">Scan</button>
     <p id="msg"></p>
     <script>
-        let msg = document.getElementById('msg');
-        msg.innerText = 'クリック';
-        let scanButton = document.getElementById('scanButton');
-        scanButton.addEventListener("click", async () => {
-            msg.innerText = 'User clicked scan button\n';
-
+        const scan = async () => {
             try {
-                const ndef = new NDEFReader();
-                await ndef.scan();
-                msg.innerText += '> Scan started\n';
+                const reader = new NDEFReader()
+                await reader.scan()
 
-                ndef.addEventListener("readingerror", () => {
-                    msg.innerText += 'Argh! Cannot read data from the NFC tag. Try another one?\n';
-                });
+                // Scanは起動しているが、NFCタグからデータが読み込めなかった
+                reader.addEventListener('error', (event) => {
+                    document.getElementById('msg').innerText += error + '\n';
+                })
 
-                ndef.addEventListener("reading", ({ message, serialNumber }) => {
-                    msg.innerText += `> Serial Number: ${serialNumber}\n`;
-                    msg.innerText += `> Records: (${message.records.length})\n`;
-                });
-                msg.innerText = 'スキャン準備完了\n';
+                // データを読み込んだ
+                reader.addEventListener('reading', ({ serialNumber, message }) => {
+                    const record = message.records[0]
+                    const { data, recordType } = record
+                    // recordTypeごとにdecode処理を実行する
+                })
+                document.getElementById('msg').innerText = 'スキャン準備完了\n';
             } catch (error) {
-                msg.innerText = "Argh! " + error;
+                // Scan起動失敗
+                document.getElementById('msg').innerText = error + '\n';
             }
-
-        });
+        }
     </script>
 </body>
 
