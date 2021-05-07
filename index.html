@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <button id="scanButton">スキャン準備.</button>
+    <button id="scanButton">スキャン準備</button>
     <p id="msg"></p>
     <script>
         let msg = document.getElementById('msg');
@@ -25,7 +25,7 @@
                     msg.innerText += `> Serial Number: ${serialNumber}\n`;
                 });
 
-                ndef.addEventListener("error", (event) => {
+                ndef.addEventListener("readingerror", (event) => {
                     msg.innerText += 'error\n';
                 });
                 msg.innerText += 'スキャン準備完了\n';
