@@ -26,7 +26,7 @@
                 });
 
                 ndef.addEventListener("readingerror", (event) => {
-                    msg.innerText += 'error\n';
+                    msg.innerText += 'データを読み取れませんでした。\n';
                 });
                 msg.innerText += 'スキャン準備完了\n';
             } catch (error) {
