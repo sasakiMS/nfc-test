@@ -21,7 +21,7 @@
                 const ndef = new NDEFReader();
                 await ndef.scan();
 
-                ndef.addEventListener("error", (event) => {
+                ndef.addEventListener("reagingerror", (event) => {
                     msg.innerText += error + '\n';
                 });
 
