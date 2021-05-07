@@ -21,12 +21,12 @@
                 const ndef = new NDEFReader();
                 await ndef.scan();
 
-                ndef.addEventListener("readingerror", (error) => {
-                    msg.innerText += error + '\n';
+                ndef.addEventListener("reading", ({ serialNumber, message }) => {
+                    msg.innerText += `> Serial Number: ${serialNumber}\n`;
                 });
 
-                ndef.addEventListener("reading", ({ message, serialNumber }) => {
-                    msg.innerText += `> Serial Number: ${serialNumber}\n`;
+                ndef.addEventListener("readingerror", (event) => {
+                    msg.innerText += event.error + '\n';
                 });
                 msg.innerText += 'スキャン準備完了\n';
             } catch (error) {
