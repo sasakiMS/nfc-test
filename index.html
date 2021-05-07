@@ -10,7 +10,7 @@
 
 <body>
     <button id="scanButton">スキャン準備</button>
-    <p id="msg">0</p>
+    <p id="msg"></p>
     <script>
         let msg = document.getElementById('msg');
         let scanButton = document.getElementById('scanButton');
@@ -21,7 +21,7 @@
                 const ndef = new NDEFReader();
                 await ndef.scan();
 
-                ndef.addEventListener("readingerror", (event) => {
+                ndef.addEventListener("readingerror", (error) => {
                     msg.innerText += error + '\n';
                 });
 
