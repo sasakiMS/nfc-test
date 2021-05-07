@@ -9,14 +9,14 @@
 </head>
 
 <body>
-    <button id="scanButton">Scan</button>
+    <button id="scanButton">スキャン準備</button>
     <p id="msg"></p>
     <script>
         let msg = document.getElementById('msg');
-        msg.innerText = 'スキャン準備中\n';
         let scanButton = document.getElementById('scanButton');
+        
         scanButton.addEventListener("click", async () => {
-
+            msg.innerText += 'スキャン準備中\n';
             try {
                 const ndef = new NDEFReader();
                 await ndef.scan();
@@ -28,6 +28,7 @@
                 ndef.addEventListener("reading", ({ message, serialNumber }) => {
                     msg.innerText += `> Serial Number: ${serialNumber}\n`;
                 });
+                msg.innerText += 'スキャン準備完了\n';
             } catch (error) {
                 msg.innerHTML += error + '\n';
             }
