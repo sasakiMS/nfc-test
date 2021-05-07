@@ -9,30 +9,29 @@
 </head>
 
 <body>
+    <button id="scanButton">Scan</button>
     <p id="msg"></p>
     <script>
-        const scan = async () => {
+        let msg = document.getElementById('msg');
+        msg.innerText = 'スキャン準備中\n';
+        let scanButton = document.getElementById('scanButton');
+        scanButton.addEventListener("click", async () => {
+
             try {
-                const reader = new NDEFReader()
-                await reader.scan()
+                const ndef = new NDEFReader();
+                await ndef.scan();
 
-                // Scanは起動しているが、NFCタグからデータが読み込めなかった
-                reader.addEventListener('error', (event) => {
-                    document.getElementById('msg').innerText += error + '\n';
-                })
+                ndef.addEventListener("error", (event) => {
+                    msg.innerText += error + '\n';
+                });
 
-                // データを読み込んだ
-                reader.addEventListener('reading', ({ serialNumber, message }) => {
-                    const record = message.records[0]
-                    const { data, recordType } = record
-                    // recordTypeごとにdecode処理を実行する
-                })
-                document.getElementById('msg').innerText = 'スキャン準備完了\n';
+                ndef.addEventListener("reading", ({ message, serialNumber }) => {
+                    msg.innerText += `> Serial Number: ${serialNumber}\n`;
+                });
             } catch (error) {
-                // Scan起動失敗
-                document.getElementById('msg').innerText = error + '\n';
+                msg.innerHTML += error + '\n';
             }
-        }
+        });
     </script>
 </body>
 
