@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="scanButton">Scan</button>
+    <p id="msg"></p>
+    <script>
+        let msg = document.getElementById('msg');
+        msg.innerText = 'クリック';
+        let scanButton = document.getElementById('scanButton');
+        scanButton.addEventListener("click", async () => {
+            msg.innerText = 'User clicked scan button\n';
+
+            try {
+                const ndef = new NDEFReader();
+                await ndef.scan();
+                msg.innerText += '> Scan started\n';
+
+                ndef.addEventListener("readingerror", () => {
+                    msg.innerText += 'Argh! Cannot read data from the NFC tag. Try another one?\n';
+                });
+
+                ndef.addEventListener("reading", ({ message, serialNumber }) => {
+                    msg.innerText += `> Serial Number: ${serialNumber}\n`;
+                    msg.innerText += `> Records: (${message.records.length})\n`;
+                });
+                msg.innerText = 'スキャン終了';
+            } catch (error) {
+                msg.innerText = "Argh! " + error;
+            }
+
+        });
+    </script>
+</body>
+
+</html>
