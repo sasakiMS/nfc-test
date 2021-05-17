@@ -29,22 +29,20 @@
                     }
 
                     const {data, encoding, recordType} = message.records[0];
+                    msg.textContent += `recordType: ${recordType}\n`;
                     if (recordType === "text") {
-                        msg.textContent += "recordType: text\n";
                         const textDecoder = new textDecoder(encoding);
                         const text = textDecoder.decode(data);
                         msg.textContent += `records[0]: ${text}`;
 
                     } else if (recordType === "mime" && encoding === "application/json") {
-                        msg.textContent += "recordType: application/json\n";
                         const textDecoder = new textDecoder();
                         const json = JSON.parse(textDecoder.decode(data));
                         msg.textContent += `records[0]: ${json}`;
 
                     } else if (recordType === "mime" && encoding === "image/png") {
-                        msg.textContent += "recordType: image/png\n";
                     }
-                    msg.textContent += "----------\n";
+                    msg.textContent += "\n----------\n";
                 });
 
                 ndef.addEventListener("readingerror", (event) => {
