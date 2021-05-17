@@ -21,15 +21,6 @@
 
                 ndef.addEventListener("reading", ({ serialNumber, message }) => {
                     msg.contentText += `> Serial Number: ${serialNumber}\n`;
-                    if (message.records.length <= 0) {
-                        return;
-                    }
-                    const {data, encoding, recordType} = message.records[0];
-                    if (recordType === 'text') {
-                        const textDecoder = new textDecoder(encoding);
-                        const text = textDecoder.decode(data);
-                        msg.contentText += `records[0]: ${text}`;
-                    }
                 });
 
                 ndef.addEventListener("readingerror", (event) => {
