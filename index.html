@@ -12,23 +12,32 @@
     <p id="msg"></p>
     <script>
         let msg = document.getElementById('msg');
-        
+
         scanButton.addEventListener("click", async () => {
-            msg.innerText += 'スキャン準備中\n';
+            msg.contentText += 'スキャン準備中\n';
             try {
                 const ndef = new NDEFReader();
                 await ndef.scan();
 
                 ndef.addEventListener("reading", ({ serialNumber, message }) => {
-                    msg.innerText += `> Serial Number: ${serialNumber}\n`;
+                    msg.contentText += `> Serial Number: ${serialNumber}\n`;
+                    if (message.records.length <= 0) {
+                        return;
+                    }
+                    const {data, encoding, recordType} = message.records[0];
+                    if (recordType === 'text') {
+                        const textDecoder = new textDecoder(encoding);
+                        const text = textDecoder.decode(data);
+                        msg.contentText += `records[0]: ${text}`;
+                    }
                 });
 
                 ndef.addEventListener("readingerror", (event) => {
-                    msg.innerText += 'データを読み取れませんでした。\n';
+                    msg.contentText += 'データを読み取れませんでした。\n';
                 });
-                msg.innerText += 'スキャン準備完了\n';
+                msg.contentText += 'スキャン準備完了\n';
             } catch (error) {
-                msg.innerHTML += error + '\n';
+                msg.contentText += error + '\n';
             }
         });
     </script>
