@@ -21,6 +21,7 @@
 
                 ndef.addEventListener("reading", ({ serialNumber, message }) => {
                     msg.textContent += `> Serial Number: ${serialNumber}\n`;
+                    msg.textContent += `> records: ${message.records.length}\n`;
                     if (message.records.length <= 0) {
                         return;
                     }
