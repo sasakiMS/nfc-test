@@ -20,15 +20,24 @@
                 await ndef.scan();
 
                 ndef.addEventListener("reading", ({ serialNumber, message }) => {
-                    msg.contentText += `> Serial Number: ${serialNumber}\n`;
+                    msg.textContent += `> Serial Number: ${serialNumber}\n`;
+                    if (message.records.length <= 0) {
+                        return;
+                    }
+                    const {data, encoding, recordType} = message.records[0];
+                    if (recordType === 'text') {
+                        const textDecoder = new textDecoder(encoding);
+                        const text = textDecoder.decode(data);
+                        msg.textContent += `records[0]: ${text}`;
+                    }
                 });
 
                 ndef.addEventListener("readingerror", (event) => {
-                    msg.contentText += 'データを読み取れませんでした。\n';
+                    msg.textContent += 'データを読み取れませんでした。\n';
                 });
-                msg.contentText += 'スキャン準備完了\n';
+                msg.textContent += 'スキャン準備完了\n';
             } catch (error) {
-                msg.contentText += error + '\n';
+                msg.textContent += error + '\n';
             }
         });
     </script>
