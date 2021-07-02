@@ -26,6 +26,8 @@
                     if (message.records.length <= 0) {
                         msg.textContent += "records: 0\n";
                         return;
+                    } else {
+                        msg.textContent += "record[0]: " + records[0] + "\n";
                     }
 
                     const {data, encoding, recordType} = message.records[0];
